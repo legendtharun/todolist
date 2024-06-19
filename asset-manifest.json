@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/legendtharun/todolist/static/css/main.98fb1e60.css",
+    "main.js": "/legendtharun/todolist/static/js/main.a5b1347a.js",
+    "index.html": "/legendtharun/todolist/index.html",
+    "main.98fb1e60.css.map": "/legendtharun/todolist/static/css/main.98fb1e60.css.map",
+    "main.a5b1347a.js.map": "/legendtharun/todolist/static/js/main.a5b1347a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.98fb1e60.css",
+    "static/js/main.a5b1347a.js"
+  ]
+}
