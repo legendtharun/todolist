@@ -22,6 +22,7 @@ body{
 }
 #Day{
     font-weight: normal;
+    letter-spacing: normal;
 }
 .CurrDate{
     display: flex;
