@@ -151,12 +151,54 @@ body{
     @media screen and (max-width:475px) {
     
         .calender{
-            transform: scale(110%);
-            margin-left: 7%;
-            
+            transform: scale(100%);
+            margin-left: 0;
+            margin-top: 0;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            box-shadow: 0 0;
+            padding-bottom: 20px;
+        }
+        .Frame2{
+            height: auto;
+        }
+        .Frame1{
+            height: auto;
+        }
+        .Frame1 h3{
+            font-size: 20px;
+        }
+        .Frame1 h4{
+            font-size: 1.5rem
+        }
+        #Day{
+            font-size: 70px;
+            /* padding-bottom: 25px; */
+        }
+        .todolist1{
+            margin-top: 25px;
         }
        
       }
+     @media screen and (max-width:370px) {
+            .calender{
+                border-radius: 0;
+                margin-top: 0;
+            }
+            .Frame2{
+                height: auto;
+            }
+            /* .Frame1{
+                height: 440px;
+            } */
+            .Frame1 h3{
+                font-size: 18px;
+            }
+            .todolist1{
+                margin-top: 25px;
+            }
+     } 
   }
   @media screen and (max-width:440px) {
     .calender{
