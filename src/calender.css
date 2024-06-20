@@ -139,17 +139,30 @@ body{
     
     
   }
-  @media screen and (max-width:485px) {
-    .Frame2{
-        
-    }
+  @media screen and (max-width:520px) {
+    
     .calender{
-        transform: scale(110%);
+        /* transform: scale(110%); */
         margin-left: 10%;
         
     }
    
+    @media screen and (max-width:475px) {
+    
+        .calender{
+            transform: scale(110%);
+            margin-left: 7%;
+            
+        }
+       
+      }
   }
+  @media screen and (max-width:440px) {
+    .calender{
+        transform: scale(100%);
+    }
+  }
+  
   @media screen and (max-width:440px) {
     .calender{
         transform: scale(100%);
@@ -158,6 +171,6 @@ body{
   @media screen and (max-width:420px) {
     .calender{
         transform: scale(100%);
-        margin-left: 5%;
+        margin-left: 0%;
     }
   }
