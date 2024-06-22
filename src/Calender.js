@@ -2,18 +2,62 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./calender.css";
 import Calendar from "react-calendar";
 import "./calender1.css";
-import Todo_list from "./Todo";
-import { useEffect } from "react";
+// import Todo_list from "./Todo";
+import { useEffect, useState } from "react";
+import React from "react";
+
 export default function Calender() {
-  let tododata = Todo_list.map((item) => {
+  let [updatedlist, setupdatedlists] = React.useState();
+  let [upcominglist, setupcominglist] = React.useState();
+  const [name, setName] = React.useState("");
+  // localStorage.clear();
+  const storedData = localStorage.getItem("tododata");
+  function DataCheck() {
+    if (!storedData) {
+      // console.log("yes its ");
+
+      const dataArray = [
+        {
+          id: "06 Jun 2024",
+          tasks: [" My exams start", " I should be consious about it"],
+        },
+        {
+          id: "16 Jun 2024",
+          tasks: [" My holidays start here", " I should be productive again"],
+        },
+        {
+          id: "23 Jun 2024",
+          tasks: [
+            " I should do my relevent project works",
+            " I should be productive",
+          ],
+        },
+        {
+          id: "24 Jun 2024",
+          tasks: [
+            " I should do my relevent project works again",
+            " I should be productive again",
+          ],
+        },
+      ];
+      localStorage.setItem("tododata", JSON.stringify(dataArray));
+      window.location.reload();
+    }
+  }
+
+  const [data, setData] = useState(() => {
+    return JSON.parse(localStorage.getItem("tododata")) || [];
+  });
+  let tododata = data.map((item) => {
     return item;
   });
-  //   console.log(tododata);
+  // console.log(tododata);
   let daysinlist = [];
   for (let i = 0; i < tododata.length; i++) {
     daysinlist.push(tododata[i].id);
   }
   //   console.log(daysinlist);
+
   function Default() {
     let today = new Date();
     today = String(today);
@@ -32,22 +76,16 @@ export default function Calender() {
       let todo1 = document.getElementById("todolist1");
       let todo2 = document.getElementById("todolist2");
       if (curr_id === selected_date) {
-        todo1.innerText = tododata[i].task1;
-        todo2.innerText = tododata[i].task2;
-        // try {
-        //   uptodo1.innerText = tododata[i + 1].task1;
-        //   uptodo2.innerText = tododata[i + 1].task2;
-        // } catch (e) {
-        //   uptodo1.innerText = "Looks like there is no upcoming tasks.";
-        //   uptodo2.innerText = "Looks like there is no upcoming tasks.";
-        // }
+        const updatedlist1 = tododata[i].tasks.map((curr_task) => {
+          return <li>{curr_task}</li>;
+        });
+        setupdatedlists(updatedlist1);
         break;
       } else {
-        todo1.innerText = "Today is free!!";
-        todo2.innerText = "No tasks there";
+        // console.log("yes");
+        const nonupdateditem = <li>Today is free!!</li>;
 
-        // uptodo1.innerText = "Looks like there is no upcoming tasks.";
-        // uptodo2.innerText = "Looks like there is no upcoming tasks.";
+        setupdatedlists(nonupdateditem);
       }
     }
     let uptodo1 = document.getElementById("uptodolist1");
@@ -83,8 +121,10 @@ export default function Calender() {
         ) {
           // console.log("success");
           // console.log(tododata[j]);
-          uptodo1.innerText = tododata[j].task1;
-          uptodo2.innerText = tododata[j].task2;
+          const upcominglist1 = tododata[j].tasks.map((curr_task) => {
+            return <li>{curr_task}</li>;
+          });
+          setupcominglist(upcominglist1);
           break;
         }
       }
@@ -100,23 +140,28 @@ export default function Calender() {
           curr_date[1] === nextMonth[1] &&
           curr_date[2] === today[3]
         ) {
-          uptodo1.innerText = tododata[j].task1;
-          uptodo2.innerText = tododata[j].task2;
+          const upcominglist2 = tododata[j].tasks.map((curr_task) => {
+            return <li>{curr_task}</li>;
+          });
+          setupcominglist(upcominglist2);
           break;
         }
       }
     }
-    if (uptodo1.innerText === "") {
-      // console.log("yes");
-      uptodo1.innerText = "Looks like there is no upcoming tasks.";
-      uptodo2.innerText = "Looks like there is no upcoming tasks.";
-    }
   }
   useEffect(() => {
     Default();
+    DataCheck();
+    Refresh();
   }, []);
+  // useEffect(() => {
+  //   DataCheck();
+  // }, []);
+
   function Day(value) {
     value = String(value);
+    let hiddenspan = document.getElementById("hiddenspan");
+    hiddenspan.innerText = value;
     const Date = value.split(" ");
     const day = document.getElementById("Day");
     const month = document.getElementById("Month");
@@ -124,29 +169,127 @@ export default function Calender() {
     day.innerText = Date[2];
     month.innerText = Date[1];
     year.innerText = Date[3];
+    let verifies = false;
     for (let i = 0; i < tododata.length; i++) {
       let curr_id = String(tododata[i].id);
       //   console.log(curr_id);
       let selected_date = String(Date[2] + " " + Date[1] + " " + Date[3]);
       //   console.log(selected_date);
-      let todo1 = document.getElementById("todolist1");
-      let todo2 = document.getElementById("todolist2");
+      // let todo1 = document.getElementById("todolist1");
+      // let todo2 = document.getElementById("todolist2");
       let uptodo1 = document.getElementById("uptodolist1");
       let uptodo2 = document.getElementById("uptodolist2");
-      if (curr_id === selected_date) {
-        todo1.innerText = tododata[i].task1;
-        todo2.innerText = tododata[i].task2;
 
+      if (curr_id === selected_date) {
+        // console.log(true);
+        verifies = true;
+        // console.log("yes");
+        let initial = 0;
+        let updatedlist2 = tododata[i].tasks.map((curr_task) => {
+          initial = initial + 1;
+          let classNam = "task" + initial;
+          let delclassname = "btn btn-primary " + `${classNam}`;
+          const removeElementsByClassName = (className) => {
+            // console.log(className);
+            // console.log(updatedlist2);
+            // for (let i = 0; i < updatedlist2.length; i++) {
+            //   console.log(updatedlist2[i].props.className);
+            updatedlist2 = updatedlist2.filter(
+              (element) => element.props.className !== className
+            );
+            setupdatedlists(updatedlist2);
+            // console.log(updatedlist2);
+            for (let k = 0; k < updatedlist2.length; k++) {
+              // console.log("success");
+              tododata[i].tasks = [];
+              tododata[i].tasks[k] = updatedlist2[k].props.children[0];
+            }
+            if (updatedlist2.length === 0) {
+              tododata[i].tasks = [];
+            }
+
+            // console.log(tododata);
+            localStorage.setItem("tododata", JSON.stringify(tododata));
+            //   }
+          };
+          return (
+            <li className={classNam}>
+              {curr_task}
+              <button
+                className={delclassname}
+                id="delete-btn"
+                onClick={() => removeElementsByClassName(classNam)}
+              >
+                Delete
+              </button>
+            </li>
+          );
+        });
+        setupdatedlists(updatedlist2);
+        // console.log(updatedlist);
         break;
       } else {
-        todo1.innerText = "Today is free!!";
-        todo2.innerText = "No tasks there";
+        const noitem = <li>Today is free!!</li>;
+        setupdatedlists(noitem);
+      }
+    }
+    if (!verifies) {
+      const nonupdateditem = <li>Today is free!!</li>;
+
+      setupdatedlists(nonupdateditem);
+    }
+  }
+
+  function handleChange(event) {
+    setName(event.target.value);
+  }
+
+  function Addtasks() {
+    let hiddenspan = document.getElementById("hiddenspan");
+    let value = hiddenspan.innerText;
+    let Date = value.split(" ");
+    // console.log(updatedlist);
+    let verify = false;
+    for (let i = 0; i < tododata.length; i++) {
+      let curr_dat = String(tododata[i].id).split(" ");
+      // console.log(curr_dat);
+      // console.log(Date);
+      if (
+        Date[2] === curr_dat[0] &&
+        Date[1] === curr_dat[1] &&
+        Date[3] === curr_dat[2]
+      ) {
+        // console.log("yes");
+        // console.log(name);
+        verify = true;
+        tododata[i].tasks.push(name);
+        // console.log(tododata);
+        Day(value);
+        localStorage.setItem("tododata", JSON.stringify(tododata));
+      }
+    }
+    if (!verify) {
+      let id = Date[2] + " " + Date[1] + " " + Date[3];
+      tododata.push({ id, tasks: [name] });
+      // console.log(tododata);
+      // const newdata=<li>{name}</li>
+      Day(value);
+      localStorage.setItem("tododata", JSON.stringify(tododata));
+      window.location.reload();
+    }
+  }
+  function Refresh() {
+    for (let i = 0; i < tododata.length; i++) {
+      if (tododata[i].tasks.length === 0) {
+        tododata.splice(i, 1);
+        localStorage.setItem("tododata", JSON.stringify(tododata));
+        window.location.reload();
       }
     }
   }
   return (
     <>
-      <div className="row">
+      <div className="row body">
         <div className="Frame1 col-lg-5">
           <div className="CurrDate col-sm-12" id="Date">
             <h3 id="Day"></h3>
@@ -157,17 +300,26 @@ export default function Calender() {
           </div>
           <div className="ToDoList todolist1 col-sm-12">
             <h3>Today's Deadlines</h3>
-            <ul>
-              <li id="todolist1"></li>
-              <li id="todolist2"></li>
-            </ul>
+            <span id="hiddenspan"></span>
+            <ul>{updatedlist}</ul>
+            <input
+              type="text"
+              id="curr_input"
+              onChange={handleChange}
+              className=""
+            />
+            <button
+              type="button"
+              onClick={Addtasks}
+              id="edit"
+              className="btn btn-primary"
+            >
+              Add tasks
+            </button>
           </div>
           <div className="ToDoList col-sm-12">
             <h3>Upcoming Deadlines</h3>
-            <ul>
-              <li id="uptodolist1"></li>
-              <li id="uptodolist2"></li>
-            </ul>
+            <ul>{upcominglist}</ul>
           </div>
         </div>
         <div className="Frame2 col-lg-7">
