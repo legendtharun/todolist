@@ -245,6 +245,7 @@ export default function Calender() {
   }
 
   function Addtasks() {
+    document.getElementById("curr_input").value = "";
     let hiddenspan = document.getElementById("hiddenspan");
     let value = hiddenspan.innerText;
     let Date = value.split(" ");
@@ -277,6 +278,7 @@ export default function Calender() {
       localStorage.setItem("tododata", JSON.stringify(tododata));
       window.location.reload();
     }
+    setName("");
   }
   function Refresh() {
     for (let i = 0; i < tododata.length; i++) {
