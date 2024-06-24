@@ -3,7 +3,7 @@ body{
 }
 .Frame1,.Frame2{
     /* border: 2px solid black; */
-    min-height: 100vh;
+    min-height: 105vh;
     height:auto;
 }
 .Frame2{
@@ -13,7 +13,7 @@ body{
 }
 .Frame1{
     background-color: #36DBE5;
-    padding: 20px;
+    padding: 10px;
 }
 .Frame1 h3{
     text-transform: uppercase;
@@ -154,6 +154,9 @@ body{
     .calender{
         transform: scale(160%);
     }
+    .Frame1,.Frame2{
+      height: 100vh;
+    }
   }
   @media screen and (max-width:1190px) {
     .calender{
@@ -172,6 +175,15 @@ body{
   }
   @media screen and (max-width:991px) {
     .calender{
+        transform: scale(190%);
+        
+    }
+    .Frame1,.Frame2{
+      min-height: auto;
+    }
+  }
+  @media screen and (max-width:831px) {
+    .calender{
         transform: scale(170%);
         
     }
@@ -189,28 +201,25 @@ body{
         transform: scale(150%);
     }
   }
-  @media screen and (max-width:585px) {
-    .calender{
-        transform: scale(140%);
-    }
-  }
+  
   @media screen and (max-width:585px) {
     .Frame2{
         height: 80vh;
         /* padding: 0; */
     }
     .calender{
-        transform: scale(120%);
-        margin-left: 15%;
+        transform: scale(130%);
+        
     }
     
     
   }
+
   @media screen and (max-width:520px) {
     
     .calender{
-        /* transform: scale(110%); */
-        margin-left: 10%;
+        transform: scale(120%);
+        
         
     }
    

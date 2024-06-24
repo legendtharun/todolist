@@ -11,11 +11,6 @@ export default function Calender() {
   let [upcominglist, setupcominglist] = React.useState();
   const [name, setName] = React.useState("");
 
-  const [, forceRender] = useState(undefined);
-
-  const handleClick = () => {
-    forceRender((prev) => !prev);
-  };
   // localStorage.clear();
   const storedData = localStorage.getItem("tododata");
   function DataCheck() {
@@ -67,6 +62,8 @@ export default function Calender() {
   function Default() {
     let today = new Date();
     today = String(today);
+    let hiddenspan = document.getElementById("hiddenspan");
+    hiddenspan.innerText = today;
     today = today.split(" ");
     const day = document.getElementById("Day");
     const month = document.getElementById("Month");
@@ -264,56 +261,58 @@ export default function Calender() {
   }
   return (
     <>
-      <div className="row body">
-        <div className="Frame1 col-lg-5">
-          <div className="CurrDate col-sm-12" id="Date">
-            <h3 id="Day"></h3>
-            <div className="innerdatebox">
-              <h4 id="Month"></h4>
-              <h4 id="year"></h4>
+      <div className="container-fluid">
+        <div className="row body">
+          <div className="Frame1 col-lg-5">
+            <div className="CurrDate col-sm-12" id="Date">
+              <h3 id="Day"></h3>
+              <div className="innerdatebox">
+                <h4 id="Month"></h4>
+                <h4 id="year"></h4>
+              </div>
+            </div>
+            <div className="ToDoList todolist1 col-sm-12">
+              <h3>Today's Deadlines</h3>
+              <span id="hiddenspan"></span>
+              <ul>{updatedlist}</ul>
+              <input
+                type="text"
+                id="curr_input"
+                onChange={handleChange}
+                className=""
+              />
+              <button
+                type="button"
+                onClick={Addtasks}
+                id="edit"
+                className="btn btn-primary"
+              >
+                Add tasks
+              </button>
+            </div>
+            <div className="ToDoList col-sm-12">
+              <h3>Upcoming Deadlines</h3>
+              <ul>{upcominglist}</ul>
             </div>
           </div>
-          <div className="ToDoList todolist1 col-sm-12">
-            <h3>Today's Deadlines</h3>
-            <span id="hiddenspan"></span>
-            <ul>{updatedlist}</ul>
-            <input
-              type="text"
-              id="curr_input"
-              onChange={handleChange}
-              className=""
+          <div className="Frame2 col-lg-7">
+            <Calendar
+              onClickDay={Day}
+              className="calender"
+              tileClassName={({ date, view }) => {
+                date = String(date);
+                let indate = date.split(" ");
+                // console.log(daysinlist);
+                if (
+                  daysinlist.includes(
+                    indate[2] + " " + indate[1] + " " + indate[3]
+                  )
+                ) {
+                  return "react-calendar__tile--highlight";
+                }
+              }}
             />
-            <button
-              type="button"
-              onClick={Addtasks}
-              id="edit"
-              className="btn btn-primary"
-            >
-              Add tasks
-            </button>
           </div>
-          <div className="ToDoList col-sm-12">
-            <h3>Upcoming Deadlines</h3>
-            <ul>{upcominglist}</ul>
-          </div>
-        </div>
-        <div className="Frame2 col-lg-7">
-          <Calendar
-            onClickDay={Day}
-            className="calender"
-            tileClassName={({ date, view }) => {
-              date = String(date);
-              let indate = date.split(" ");
-              // console.log(daysinlist);
-              if (
-                daysinlist.includes(
-                  indate[2] + " " + indate[1] + " " + indate[3]
-                )
-              ) {
-                return "react-calendar__tile--highlight";
-              }
-            }}
-          />
         </div>
       </div>
     </>

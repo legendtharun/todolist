@@ -219,7 +219,7 @@
   }
   @media screen and (max-width:475px){
     .react-calendar{
-      width: 95%;
+      width: 100%;
       border-radius: 0px;
       margin: auto;
       
