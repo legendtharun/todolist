@@ -10,6 +10,12 @@ export default function Calender() {
   let [updatedlist, setupdatedlists] = React.useState();
   let [upcominglist, setupcominglist] = React.useState();
   const [name, setName] = React.useState("");
+
+  const [, forceRender] = useState(undefined);
+
+  const handleClick = () => {
+    forceRender((prev) => !prev);
+  };
   // localStorage.clear();
   const storedData = localStorage.getItem("tododata");
   function DataCheck() {
@@ -88,71 +94,32 @@ export default function Calender() {
         setupdatedlists(nonupdateditem);
       }
     }
-    let uptodo1 = document.getElementById("uptodolist1");
-    let uptodo2 = document.getElementById("uptodolist2");
-    let todays_date = today[2];
-    let month_lessdays = ["Feb", "Apr", "Jun", "Sept", "Nov"];
-    let month_moredays = ["Jan", "Mar", "May", "July", "Aug", "Oct", "Dec"];
-    var now = new Date();
-    var nextMonth;
 
-    if (now.getMonth() === 11) {
-      // If it's December, set to January of the following year
-      nextMonth = new Date(now.getFullYear() + 1, 0, 1);
-    } else {
-      // Otherwise, set to the first day of the next month
-      nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-    }
-    nextMonth = String(nextMonth).split(" ");
-
-    if (
-      (todays_date < 30 && month_lessdays.includes(today[1])) ||
-      (todays_date < 31 && month_moredays.includes(today[1]))
-    ) {
-      // console.log("yes");
-
-      for (let j = 0; j < tododata.length; j++) {
-        let curr_date = String(tododata[j].id).split(" ");
-        // console.log(curr_date);
-        if (
-          curr_date[0] > today[2] &&
-          curr_date[1] === today[1] &&
-          curr_date[2] === today[3]
-        ) {
-          // console.log("success");
-          // console.log(tododata[j]);
-          const upcominglist1 = tododata[j].tasks.map((curr_task) => {
-            return <li>{curr_task}</li>;
-          });
-          setupcominglist(upcominglist1);
-          break;
-        }
+    // console.log("yes");
+    let upcominglist1 = [];
+    for (let j = 0; j < tododata.length; j++) {
+      let curr_date = String(tododata[j].id).split(" ");
+      // console.log(curr_date);
+      if (new Date(curr_date) > new Date()) {
+        // console.log("success");
+        // console.log(tododata[j]);
+        upcominglist1.push(
+          tododata[j].tasks.map((curr_task) => {
+            return (
+              <li>
+                {tododata[j].id + ":  "} {curr_task}
+              </li>
+            );
+          })
+        );
       }
-    } else if (
-      (todays_date == 30 && month_lessdays.includes(today[1])) ||
-      (todays_date == 31 && month_moredays.includes(today[1]))
-    ) {
-      for (let j = 0; j < tododata.length; j++) {
-        let curr_date = String(tododata[j].id).split(" ");
-        // console.log("yes");
-        if (
-          curr_date[0] < today[2] &&
-          curr_date[1] === nextMonth[1] &&
-          curr_date[2] === today[3]
-        ) {
-          const upcominglist2 = tododata[j].tasks.map((curr_task) => {
-            return <li>{curr_task}</li>;
-          });
-          setupcominglist(upcominglist2);
-          break;
-        }
-      }
+      setupcominglist(upcominglist1);
     }
   }
   useEffect(() => {
-    Default();
     DataCheck();
     Refresh();
+    Default();
   }, []);
   // useEffect(() => {
   //   DataCheck();
@@ -177,8 +144,8 @@ export default function Calender() {
       //   console.log(selected_date);
       // let todo1 = document.getElementById("todolist1");
       // let todo2 = document.getElementById("todolist2");
-      let uptodo1 = document.getElementById("uptodolist1");
-      let uptodo2 = document.getElementById("uptodolist2");
+      // let uptodo1 = document.getElementById("uptodolist1");
+      // let uptodo2 = document.getElementById("uptodolist2");
 
       if (curr_id === selected_date) {
         // console.log(true);
@@ -206,6 +173,9 @@ export default function Calender() {
             }
             if (updatedlist2.length === 0) {
               tododata[i].tasks = [];
+              Refresh();
+              localStorage.setItem("tododata", JSON.stringify(tododata));
+              window.location.reload();
             }
 
             // console.log(tododata);
@@ -276,6 +246,7 @@ export default function Calender() {
       // const newdata=<li>{name}</li>
       Day(value);
       localStorage.setItem("tododata", JSON.stringify(tododata));
+
       window.location.reload();
     }
     setName("");
@@ -284,10 +255,12 @@ export default function Calender() {
     for (let i = 0; i < tododata.length; i++) {
       if (tododata[i].tasks.length === 0) {
         tododata.splice(i, 1);
-        localStorage.setItem("tododata", JSON.stringify(tododata));
-        window.location.reload();
       }
     }
+
+    tododata.sort((a, b) => new Date(a.id) - new Date(b.id));
+    localStorage.setItem("tododata", JSON.stringify(tododata));
+    // window.location.reload();
   }
   return (
     <>

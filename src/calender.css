@@ -3,7 +3,8 @@ body{
 }
 .Frame1,.Frame2{
     /* border: 2px solid black; */
-    height: 100vh
+    min-height: 100vh;
+    height:auto;
 }
 .Frame2{
     background-color:#249EE3;
@@ -172,6 +173,10 @@ body{
   @media screen and (max-width:991px) {
     .calender{
         transform: scale(170%);
+        
+    }
+    .Frame1,.Frame2{
+      min-height: auto;
     }
   }
   @media screen and (max-width:681px) {
